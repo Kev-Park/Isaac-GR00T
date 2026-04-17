@@ -161,3 +161,9 @@ class FinetuneConfig:
     """If True, skip loading model weights from base_model_path (architecture only).
     The processor (tokenizer/config) is still loaded from base_model_path.
     Useful for CI/testing to skip the slow checkpoint shard loading."""
+
+    use_ddp: bool = False
+    """If True, use PyTorch DDP instead of DeepSpeed for multi-GPU training.
+    DDP has a simpler collective pattern — preferred on consumer GPUs without
+    NVLink/P2P (e.g. RTX 4090/5090) and when the model fits per-GPU without
+    needing ZeRO sharding."""
