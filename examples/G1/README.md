@@ -79,10 +79,11 @@ uv run python gr00t/eval/open_loop_eval.py \
 | `vr_3pt_position`, `vr_3pt_orientation` | | Primary teleop targets |
 | `left_hand_joints`, `right_hand_joints` | | Finger targets — VR can't capture fingers |
 | `left_wrist_joints`, `right_wrist_joints` | | Wrist-twist disambiguation |
-| `planner_mode`, `planner_movement`, `planner_facing`, `planner_speed`, `planner_height` | | Base-motion commands (constants in stationary-pick; meaningful for locomotion data) |
+| `planner_movement`, `planner_facing`, `planner_speed`, `planner_height` | | Continuous base-motion commands |
 | | `action.wbc` | Full-body joint target is a downstream controller output, not a VLA output |
 | | `action.motion_token`, `teleop.smpl_joints/pose/body_quat_w/target_body_orientation` | Zero-filled by converter (v1) |
-| | `stream_mode`, `delta_heading` | Constants / zero-filled in converter |
+| | `planner_mode`, `stream_mode` | int32 discrete flags — LeRobot's `compute_episode_stats` skips integer dtypes, so GR00T's regression action head has no normalization stats for them |
+| | `delta_heading` | Zero-filled constant in converter |
 
 All included action keys are registered as
 `ABSOLUTE` / `NON_EEF` / `DEFAULT`. `NON_EEF` because the 3-point VR pose

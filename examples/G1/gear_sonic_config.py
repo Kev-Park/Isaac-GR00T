@@ -65,15 +65,16 @@ gear_sonic_config = {
             "right_hand_joints",
             "left_wrist_joints",
             "right_wrist_joints",
-            "planner_mode",
             "planner_movement",
             "planner_facing",
             "planner_speed",
             "planner_height",
             # Excluded: action.wbc (full-body joint target — produced downstream
             # by the WBC controller, not the VLA);
-            # stream_mode / delta_heading (constants or zero-filled in the
-            # stationary-pick converter output — no learning signal).
+            # planner_mode / stream_mode (int32 discrete flags — LeRobot's
+            # compute_episode_stats skips integer dtypes, so GR00T's regression
+            # action head has no normalization stats for them);
+            # delta_heading (zero-filled constant in the converter).
         ],
         action_configs=[
             # vr_3pt_position: 9D = 3× (x,y,z) for (left wrist, right wrist, torso),
@@ -118,14 +119,9 @@ gear_sonic_config = {
                 type=ActionType.NON_EEF,
                 format=ActionFormat.DEFAULT,
             ),
-            # Planner commands — high-level base motion. Constants for the
-            # stationary-pick task in the v1 converter, but included so this
+            # Planner commands — high-level base motion. Included so this
             # config generalizes to locomotion datasets without a rewrite.
-            ActionConfig(
-                rep=ActionRepresentation.ABSOLUTE,
-                type=ActionType.NON_EEF,
-                format=ActionFormat.DEFAULT,
-            ),
+            # (planner_mode is excluded — see modality_keys comment above.)
             ActionConfig(
                 rep=ActionRepresentation.ABSOLUTE,
                 type=ActionType.NON_EEF,
